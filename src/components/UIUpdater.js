@@ -9,7 +9,7 @@ export class UIUpdater {
 
     updateBirdList(categoryBird) {
         const birdList = document.querySelector('#birdList');
-        birdList.innerHTML = ""; 
+        birdList.innerHTML = "";
 
         categoryBird.forEach((bird) => {
             const li = document.createElement('li');
@@ -26,6 +26,11 @@ export class UIUpdater {
         scoreElement.textContent = `Score: ${score}`;
     }
 }
+
+
+
+
+
 
    
 

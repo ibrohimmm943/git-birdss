@@ -31,27 +31,36 @@ export class QuizManager {
         this.addBirdSelectionEvent(categoryBird);
     }
 
+    checkAnswer(selectedBird) {
+        if (selectedBird === this.currentBird.name) {
+            this.isAnswered = true;
+            this.updateScore(1);
+            return true; // To'g'ri javob
+        }
+        return false; // Noto'g'ri javob
+    }
+    
+
     addBirdSelectionEvent(categoryBird) {
         const birdOptions = document.querySelectorAll('.bird-option');
-        const birdDetails = document.getElementById('birdDetails'); 
+        const birdDetails = document.getElementById('birdDetails');
         const mysteryBirdImage = document.getElementById('mysteryBirdImage');
-        const mysteryBirdName = document.getElementById('mysteryBirdName'); 
+        const mysteryBirdName = document.getElementById('mysteryBirdName');
         const mysteryAudioButton = document.getElementById('mysteryAudioButton');
         const mysteryProgress = document.getElementById('mysteryProgress');
         const mysteryTime = document.getElementById('mysteryTime');
+
+        
+        
 
         birdOptions.forEach((option) => {
             option.addEventListener('click', (e) => {
                 if (this.isAnswered) return;
 
                 const selectedBirdName = e.target.dataset.bird;
-
-                
                 const selectedBird = categoryBird.find((bird) => bird.name === selectedBirdName);
 
-                
                 if (selectedBird) {
-
                     birdDetails.innerHTML = `
                         <img src="${selectedBird.image}" alt="${selectedBird.name}" />
                         <h2 class="bird-name">${selectedBird.name}</h2>
@@ -81,22 +90,19 @@ export class QuizManager {
                     });
                 }
 
+                
+
                 if (selectedBirdName === this.currentBird.name) {
                     e.target.classList.add('correct');
                     this.audioPlayer.playFeedbackSound("correct");
                     this.audioPlayer.playSpecificAudio(this.currentBird.audio);
-
                     mysteryBirdName.textContent = this.currentBird.name;
-
                     this.isAnswered = true;
                     this.updateScore(1);
                 } else {
                     e.target.classList.add('incorrect');
                     this.audioPlayer.playFeedbackSound("incorrect");
-
-                    const incorrectBird = categoryBird.find(
-                        (bird) => bird.name === selectedBirdName
-                    );
+                    const incorrectBird = categoryBird.find((bird) => bird.name === selectedBirdName);
                     this.audioPlayer.playSpecificAudio(incorrectBird.audio);
                 }
             });
@@ -107,7 +113,46 @@ export class QuizManager {
         this.score += points;
         this.uiUpdater.updateScore(this.score);
     }
+
+    nextQuestion() {
+        this.currentCategory += 1;
+
+        if (this.currentCategory < birdsData.length) {
+            this.startQuiz();
+        } else {
+            this.showResults();
+        }
+    }
+
+   
+    
+
+    showResults() {
+        const resultsPage = document.getElementById('resultsPage');
+        const quizPage = document.getElementById('quizPage');
+        const finalScore = document.getElementById('finalScore');
+        const congratulations = document.getElementById('congratulations');
+
+        quizPage.classList.remove('active');
+        resultsPage.classList.add('active');
+
+        finalScore.textContent = this.score;
+
+        if (this.score >= 20) {
+            congratulations.textContent = "Excellent job! You're a bird expert! 🐦🎉";
+        } else if (this.score >= 10) {
+            congratulations.textContent = "Good job! Keep learning about birds! 🐥";
+        } else {
+            congratulations.textContent = "Better luck next time! Keep practicing. 🌱";
+        }
+    }
 }
+
+
+
+
+
+
 
 
 

@@ -1,14 +1,14 @@
 export class AudioPlayer {
     constructor() {
         this.audio = null;
-        this.updateInterval = null; 
+        this.updateInterval = null;
     }
 
     toggleAudio(button, progressBar, timeDisplay) {
         if (this.audio && !this.audio.paused) {
             this.audio.pause();
             button.textContent = "▶️"; 
-            clearInterval(this.updateInterval); 
+            clearInterval(this.updateInterval);
         } else {
             this.playAudio(button, progressBar, timeDisplay);
         }
@@ -18,16 +18,16 @@ export class AudioPlayer {
         if (!this.audio) {
             this.audio = new Audio(button.dataset.audio);
             this.audio.addEventListener("loadedmetadata", () => {
-                this.updateProgress(progressBar, timeDisplay); 
+                this.updateProgress(progressBar, timeDisplay);
             });
         }
 
         this.audio.play();
-        button.textContent = "❚❚"; 
+        button.textContent = "❚❚";
 
         this.updateInterval = setInterval(() => {
             this.updateProgress(progressBar, timeDisplay);
-        }, 500); 
+        }, 500);
     }
 
     updateProgress(progressBar, timeDisplay) {
@@ -57,14 +57,17 @@ export class AudioPlayer {
 
     playFeedbackSound(type) {
         const sounds = {
-            correct: "./wrong-47985.mp3",
-            incorrect: "./wrong-answer-129254.mp3",
+            correct: "./assets/sounds/correct.mp3",
+            incorrect: "./assets/sounds/incorrect.mp3",
         };
 
         const audio = new Audio(sounds[type]);
         audio.play();
     }
 }
+
+
+
 
 
 
