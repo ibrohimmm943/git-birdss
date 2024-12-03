@@ -35,9 +35,9 @@ export class QuizManager {
         if (selectedBird === this.currentBird.name) {
             this.isAnswered = true;
             this.updateScore(1);
-            return true; // To'g'ri javob
+            return true;
         }
-        return false; // Noto'g'ri javob
+        return false; 
     }
     
 
